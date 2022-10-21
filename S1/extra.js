@@ -15,4 +15,23 @@ function fizzBuzz() {
 
 let { random } = require('./principal.js')
 
-console.log(random(1,5))
+const lista = []
+
+for (let i = 0; i < 50000; i++) {
+  lista.push(random(i, 100))
+}
+
+console.log(lista)
+
+for (let k = 1; k < lista.length; k++) {
+  for (let i = 0; i < (lista.length - k); i++) {
+      if (lista[i] > lista[i + 1]) {
+          aux = lista[i];
+          lista[i] = lista[i + 1];
+          lista[i + 1] = aux;
+      }
+  }
+}
+
+console.log('Burbuja')
+console.log(lista)
