@@ -23,15 +23,33 @@ for (let i = 0; i < 50000; i++) {
 
 console.log(lista)
 
-for (let k = 1; k < lista.length; k++) {
-  for (let i = 0; i < (lista.length - k); i++) {
-      if (lista[i] > lista[i + 1]) {
-          aux = lista[i];
-          lista[i] = lista[i + 1];
-          lista[i + 1] = aux;
-      }
-  }
+// Burbuja
+// for (let k = 1; k < lista.length; k++) {
+//   for (let i = 0; i < (lista.length - k); i++) {
+//       if (lista[i] > lista[i + 1]) {
+//           aux = lista[i];
+//           lista[i] = lista[i + 1];
+//           lista[i + 1] = aux;
+//       }
+//   }
+// }
+
+// console.log('Burbuja')
+// console.log(lista)
+
+// Casilleros
+const l = lista.length;
+let j, temp;
+
+for ( let i = 1; i < l; i++ ) {
+    j = i;
+    temp = lista[ i ];
+    while ( j > 0 && lista[ j - 1 ] > temp ) {
+        lista[ j ] = lista[ j - 1 ];
+        j--;
+    }
+    lista[ j ] = temp;
 }
 
-console.log('Burbuja')
+console.log('Casilleros')
 console.log(lista)
