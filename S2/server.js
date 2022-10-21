@@ -17,12 +17,39 @@ const fs = require('fs')
 //   console.log('Archivo actualizado!!!')
 // })
 
-fs.writeFileSync(path.join(__dirname, '/ejemplo_1.txt'), 'Este es mi archivo!!!', { encoding: 'utf-8' })
+// fs.writeFileSync(path.join(__dirname, '/ejemplo_1.txt'), 'Este es mi archivo!!!', { encoding: 'utf-8' })
 
-data = fs.readFileSync(path.join(__dirname, '/ejemplo_1.txt'), { encoding: 'utf-8' })
-console.log(data)
+// data = fs.readFileSync(path.join(__dirname, '/ejemplo_1.txt'), { encoding: 'utf-8' })
+// console.log(data)
 
-fs.appendFileSync(path.join(__dirname, '/ejemplo_1.txt'), '\nNueva linea!!!')
+// fs.appendFileSync(path.join(__dirname, '/ejemplo_1.txt'), '\nNueva linea!!!')
 
-data = fs.readFileSync(path.join(__dirname, '/ejemplo_1.txt'), { encoding: 'utf-8' })
-console.log(data)
+// data = fs.readFileSync(path.join(__dirname, '/ejemplo_1.txt'), { encoding: 'utf-8' })
+// console.log(data)
+
+// Reto 1
+let data = fs.readFileSync(path.join(__dirname, '/input.txt'))
+// console.log(data)
+let lines = 0, spaces = 0, caracter = 0
+data.forEach(c => {
+  if(c === 10){
+    lines++
+  } else if(c === 32){
+    spaces++
+  } else {
+    caracter++
+  }
+})
+// for (i in data){
+//   if(data.charCodeAt(i) === 10){
+//     lines++
+//   } else if(data.charCodeAt(i) === 32){
+//     spaces++
+//   } else {
+//     caracter++
+//   }
+// }
+console.log("Caracteres: ", data.length)
+console.log("Caracteres: ", caracter)
+console.log("Lineas: ", lines)
+console.log("Espacios: ", spaces)
