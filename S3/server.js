@@ -175,7 +175,7 @@ async function atraparPokemones(pokemones) {
     let resultados = await Promise.all(
       pokemones.map(async (pokemon) => {
         let resultado = await obtenerPokemon(pokemon);
-        console.log(`Pokemon atrapado ${pokemon}`);
+        console.log(`Pokemon atrapado ${resultado.name} ${resultado.id}`);
         return resultado;
       })
     );
