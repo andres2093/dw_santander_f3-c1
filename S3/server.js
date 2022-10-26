@@ -111,10 +111,80 @@ const fs = require('fs')
 //   .then(data => console.log(data))
 //   .catch(error => console.log(error))
 
-let promesa1 = new Promise((resolve, reject) => setTimeout(reject, 1000, "uno"))
-let promesa2 = new Promise((resolve, reject) => setTimeout(resolve, 1000, "dos"))
-let promesa3 = new Promise((resolve, reject) => setTimeout(resolve, 1000, "tres"))
+// let promesa1 = new Promise((resolve, reject) => setTimeout(reject, 1000, "uno"))
+// let promesa2 = new Promise((resolve, reject) => setTimeout(resolve, 1000, "dos"))
+// let promesa3 = new Promise((resolve, reject) => setTimeout(resolve, 1000, "tres"))
 
-Promise.all([promesa1, promesa2, promesa3])
-  .then(data => console.log(data))
+// Promise.all([promesa1, promesa2, promesa3])
+//   .then(data => console.log(data))
+//   .catch(error => console.log(error))
+
+// Reto 2
+let readFile = (path) => {
+  return new Promise((resolve, reject) => {
+    fs.readFile(path, 'utf-8', (error, data) => {
+      if(error) return reject(error)
+      return resolve(data)
+    })
+  })
+}
+
+// Promise.all([readFile("./archivo1.txt"), readFile("./archivo2.txt"), readFile("./archivo3.txt")])
+//   .then(data => console.log(data))
+//   .catch(error => console.log(error))
+
+// Ejemplo 03
+function obtenerPokemon(pokemon) {
+  return new Promise((resolve, reject) => {
+    https
+      .get(`https://pokeapi.co/api/v2/pokemon/${pokemon}`, (resp) => {
+        let datos = "";
+
+        resp.on("data", (chunk) => {
+          datos += chunk;
+        });
+
+        resp.on("end", () => {
+          try {
+            datos = JSON.parse(datos)
+            resolve(datos)
+          } catch (error) {
+            reject(error)
+          }
+        });
+      })
+      .on("error", (err) => {
+        reject(err.message);
+      });
+  });
+}
+
+const pokemones = [
+  "squirtle",
+  "pidgey",
+  "pikachu",
+  "rattata",
+  "alakazam",
+  "onix",
+  "mew",
+  "wigglytuff",
+];
+
+async function atraparPokemones(pokemones) {
+  try {
+    let resultados = await Promise.all(
+      pokemones.map(async (pokemon) => {
+        let resultado = await obtenerPokemon(pokemon);
+        console.log(`Pokemon atrapado ${pokemon}`);
+        return resultado;
+      })
+    );
+    return resultados
+  } catch (error) {
+    console.error("Error", error);
+  }
+}
+
+atraparPokemones(pokemones)
+  .then(data => console.log(data.length))
   .catch(error => console.log(error))
