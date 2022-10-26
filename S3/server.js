@@ -31,3 +31,54 @@ let fn3 = () => console.log(3)
 //     }, 3000);
 //   }, 2000);
 // }, 1000);
+
+// Reto 1
+const https = require('https')
+
+ordenar = res => {
+  console.log(res[0].films.length);
+  console.log(res[0].name);
+
+  res.sort((a, b) => {
+    if (a.films.length > b.films.length) {
+      return 1;
+    }
+    if (a.films.length < b.films.length) {
+      return -1;
+    }
+    // a must be equal to b
+    return 0;
+  });
+
+  res.sort((a, b) => a.name.localeCompare(b.name)).reverse()
+
+  console.log(res[0].films.length);
+  console.log(res[0].name);
+
+  // for(i in res){
+  //   console.log(res[i].name);
+  //   console.log(res[i].gender);
+  // }
+}
+
+ejecutarWs = callback => {
+  https.get('https://swapi.dev/api/people/', res => {
+    let data = ''
+
+    res.setEncoding('utf-8')
+    res.on('data', chunk => {
+      data += chunk
+    })
+
+    res.on('end', () => {
+      try {
+        let body = JSON.parse(data)
+        callback(body.results)
+      } catch (error) {
+        console.log(error);
+      }
+    })
+  }).on('error', err => console.log('Error', err))
+}
+
+ejecutarWs(ordenar)
