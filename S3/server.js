@@ -81,4 +81,40 @@ ejecutarWs = callback => {
   }).on('error', err => console.log('Error', err))
 }
 
-ejecutarWs(ordenar)
+// ejecutarWs(ordenar)
+
+// Ejemplo 02
+// let promesa = new Promise((resolve, reject) => {
+//   setTimeout(() => {
+//     let numero = Math.random()
+//     if(numero >= 0.5) resolve('Correcto ' + numero)
+//     reject('Rechazada ' + numero)
+//   }, 1000);
+// })
+
+// promesa
+//   .then(data => console.log(data))
+//   .catch(error => console.log(error))
+
+const fs = require('fs')
+
+// let readFile = (path) => {
+//   return new Promise((resolve, reject) => {
+//     fs.readFile(path, 'utf-8', (error, data) => {
+//       if(error) return reject(error)
+//       return resolve(data)
+//     })
+//   })
+// }
+
+// readFile("./archivo.txt")
+//   .then(data => console.log(data))
+//   .catch(error => console.log(error))
+
+let promesa1 = new Promise((resolve, reject) => setTimeout(reject, 1000, "uno"))
+let promesa2 = new Promise((resolve, reject) => setTimeout(resolve, 1000, "dos"))
+let promesa3 = new Promise((resolve, reject) => setTimeout(resolve, 1000, "tres"))
+
+Promise.all([promesa1, promesa2, promesa3])
+  .then(data => console.log(data))
+  .catch(error => console.log(error))
