@@ -1,32 +1,50 @@
+const { response } = require('express')
 const express = require('express')
 const router = express.Router()
+const sequelize = require('../config/database')
 
-let notes = [
-  {
-    id: 1,
-    title: 'Dummy',
-    content: 'Nota dummy'
-  }
-]
 // GET -> Obtener notas
-router.get('/', (request, response) => {
-  response.send(notes) 
-  // response.json(notes)
+router.get('/', async (req, res) => {
+  return await sequelize.models.Notes.findAll()
+    .then(data => res.json(data))
+    .catch(err => res.json({ message: 'Error', data: err }))
 })
 // POST -> Añadir nota
-router.post('/', (request,response) => {
-  notes.push(request.body)
-  response.send(`Nota ${request.body.id} agregada`)
+router.post('/', async (req,res) => {
+  const { body } = req
+  return await sequelize.models.Notes.create({
+    heading: body.heading,
+    content: body.content
+  })
+    .then(data => res.json({ message: 'Created', data }))
+    .catch(err => res.json({ message: 'Error', data: err }))
 })
-// PATCH -> Editar nota
-router.patch('/', (request,response) => {
-  notes[request.body.id - 1] = request.body
-  response.send(`Nota ${request.body.id} modificada`)
+// PUT -> Editar nota
+router.put('/:id', async (req,res) => {
+  const { body, params: { id } } = req
+  const Note = await sequelize.models.Notes.findOne({
+    where: { id: id }
+  })
+  if (!Note){
+    return res.status(404).json({ message: 'Note not found' })
+  }
+  const data = await Note.update({
+    heading: body.heading,
+    content: body.content
+  })
+  return res.json({ message: 'Updated', data })
 })
 // DELETE -> Eliminar nota
-router.delete('/', (request,response) => {
-  notes = notes.filter(note => note.id !== request.body.id)
-  response.send(`Nota ${request.body.id} eliminada`)
+router.delete('/:id', async (req,res) => {
+  const { params: { id } } = req
+  const Note = await sequelize.models.Notes.findOne({
+    where: { id: id }
+  })
+  if (!Note){
+    return res.status(404).json({ message: 'Note not found' })
+  }
+  const data = await Note.destroy()
+  return res.json({ message: 'Deleted', data })
 })
 
 module.exports = router
