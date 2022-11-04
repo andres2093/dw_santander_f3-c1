@@ -22,12 +22,12 @@ module.exports = (sequelize) => sequelize.define('orders', {
   amount: Sequelize.INTEGER
 }, {
   hooks: {
-    beforeCreate: function (review, options) {
-      review.createdAt = new Date();
-      review.updatedAt = new Date();
+    beforeCreate: function (order, options) {
+      order.createdAt = new Date();
+      order.updatedAt = new Date();
     },
-    beforeUpdate: function (review, options) {
-      review.updatedAt = new Date();
+    beforeUpdate: function (order, options) {
+      order.updatedAt = new Date();
     },
   },
 });
