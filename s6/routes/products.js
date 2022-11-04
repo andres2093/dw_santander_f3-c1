@@ -4,8 +4,9 @@ const sequelize = require('../config/db');
 
 // Get all products
 router.get('/', async (req, res) => {
-  const products = await sequelize.models.products.findAndCountAll();
-  return res.status(200).json({ data: products });
+  return await sequelize.models.products.findAndCountAll()
+    .then(data => res.json(data))
+    .catch(err => res.json({ message: 'Error', data: err }))
 });
 
 // Create a new product

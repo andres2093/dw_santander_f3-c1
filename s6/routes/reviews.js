@@ -4,8 +4,9 @@ const sequelize = require('../config/db');
 
 // Get all reviews
 router.get('/', async (req, res) => {
-  const reviews = await sequelize.models.reviews.findAndCountAll();
-  return res.status(200).json({ data: reviews });
+  return await sequelize.models.reviews.findAndCountAll()
+    .then(data => res.json(data))
+    .catch(err => res.json({ message: 'Error', data: err }))
 });
 
 // Creating a new review

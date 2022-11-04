@@ -9,8 +9,8 @@ module.exports = {
       description: Sequelize.TEXT,
       price: Sequelize.FLOAT,
       image: Sequelize.STRING,
-      createAt: Sequelize.DATE,
-      updateAt: Sequelize.DATE
+      createdAt: Sequelize.DATE,
+      updatedAt: Sequelize.DATE
     })
   },
 

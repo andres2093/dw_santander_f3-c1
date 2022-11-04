@@ -14,8 +14,8 @@ module.exports = {
         },
         onDelete: 'CASCADE'
       },
-      createAt: Sequelize.DATE,
-      updateAt: Sequelize.DATE
+      createdAt: Sequelize.DATE,
+      updatedAt: Sequelize.DATE
     })
   },
 
