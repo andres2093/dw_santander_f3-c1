@@ -2,6 +2,7 @@ const { Sequelize } = require('sequelize')
 
 const productModel = require('../models/product')
 const reviewModel = require('../models/review')
+const userModel = require('../models/user')
 
 const sequelize = new Sequelize(
   'sesion6',
@@ -15,7 +16,7 @@ const sequelize = new Sequelize(
   }
 )
 
-const models = [ productModel, reviewModel ]
+const models = [ productModel, reviewModel, userModel ]
 
 for(let model of models)
   model(sequelize)
