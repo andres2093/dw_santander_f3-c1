@@ -20,4 +20,8 @@ const models = [ productModel, reviewModel ]
 for(let model of models)
   model(sequelize)
 
+// Configuring relations
+const { products, reviews } = sequelize.models;
+reviews.belongsTo(products); // Relation one-to-one in reviews table
+
 module.exports = sequelize
