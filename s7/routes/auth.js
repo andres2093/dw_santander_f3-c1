@@ -22,7 +22,7 @@ router.post('/login', async (req, res) => {
 router.post('/signup', async (req, res) => {
   const { body } = req;
   let user = await sequelize.models.users.findOne({
-    email: body.email,
+    where: { email: body.email },
   });
 
   // Validation for known is the user's email exists
@@ -34,6 +34,8 @@ router.post('/signup', async (req, res) => {
   user = await sequelize.models.users.create({
     name: body.name,
     lastname: body.lastname,
+    firstSurname: body.firstSurname,
+    secondSurname: body.secondSurname,
     email: body.email,
     password: body.password,
     type: 'client',
