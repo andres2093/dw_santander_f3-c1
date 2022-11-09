@@ -19,8 +19,29 @@ router.post('/login', async (req, res) => {
   return res.json({ message: 'Athenticated successfully!', token })
 })
 
-router.post('/signup', (req, res) => {
-  
+router.post('/signup', async (req, res) => {
+  const { body } = req;
+  let user = await sequelize.models.users.findOne({
+    email: body.email,
+  });
+
+  // Validation for known is the user's email exists
+  if (user) {
+    return res.status(400).json({ message: "this email is already registered" });
+  }
+
+  // Creating the user
+  user = await sequelize.models.users.create({
+    name: body.name,
+    lastname: body.lastname,
+    email: body.email,
+    password: body.password,
+    type: 'client',
+  })
+
+   // Saving user
+  await user.save();
+  return res.json({ message: 'Your account was created successfully'});
 })
 
 module.exports = router
