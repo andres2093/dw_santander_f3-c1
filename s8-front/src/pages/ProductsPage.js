@@ -1,6 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const ProductsPage = () => {
+  const [error, setError] = useState('');
+  const [products, setProducts] = useState('');
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch(process.env.REACT_APP_BACKEND_API + '/api/products', {
+        method: 'GET',
+        headers: {
+          'Authorization': window.localStorage.getItem('token')
+        }
+      })
+      const body = await response.json();
+      if (!response.ok) {
+        setError(body.message);
+      } else {
+        setProducts(body.rows)
+      }
+    }
+    fetchData()
+  }, [])
+
   return <>
     <section className="py-10">
       <div className="container mx-auto max-w-screen-lg">
@@ -16,55 +37,65 @@ const ProductsPage = () => {
             </span>
           </div>
         </div>
-        <div className="flex flex-col mb-8">
-          <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-              <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead>
-                    <tr>
-                      <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                        Name
-                      </th>
-                      <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                        Description
-                      </th>
-                      <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                        Price
-                      </th>
-                      <th className="px-6 py-3 bg-gray-50"></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  <tr>
-                    <td className="px-6 py-4 whitespace-no-wrap">
-                      <div className="flex items-center">
-                        <div className="flex-shrink-0 h-10 w-10">
-                          <img className="h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1527443195645-1133f7f28990?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80" alt="" />
-                        </div>
-                        <div className="ml-4">
-                          <div className="text-sm leading-5 font-medium text-gray-900">
-                            iMac 2020
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-no-wrap">
-                      <div className="text-sm leading-5 text-gray-900">Regional Paradigm Technician</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-no-wrap">
-                      $4,400.00
-                    </td>
-                    <td className="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
-                      <a href="#" className="text-indigo-600 hover:text-indigo-900">Edit</a>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
+        { error
+          ? <span className="inline-block w-full px-3 py-2 rounded bg-red-500 text-white mb-4">
+            {error}
+          </span>
+          :
+            <div className="flex flex-col mb-8">
+              <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                  <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                    <table className="min-w-full divide-y divide-gray-200">
+                      <thead>
+                        <tr>
+                          <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                            Name
+                          </th>
+                          <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                            Description
+                          </th>
+                          <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                            Price
+                          </th>
+                          <th className="px-6 py-3 bg-gray-50"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {
+                          products.length > 0 ?
+                            products.map((products, index) => <tr key={index} className='bg-white'>
+                            <td className="px-6 py-4 whitespace-no-wrap">
+                              <div className="flex items-center">
+                                <div className="flex-shrink-0 h-10 w-10">
+                                  <img className="h-10 w-10 rounded-full" src={ products.image }/>
+                                </div>
+                                <div className="ml-4">
+                                  <div className="text-sm leading-5 font-medium text-gray-900">
+                                    { products.name }
+                                  </div>
+                                </div>
+                              </div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-no-wrap">
+                              <div className="text-sm leading-5 text-gray-900">{ products.description }</div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-no-wrap">
+                            { products.price }
+                            </td>
+                            <td className="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
+                              <a href="#" className="text-indigo-600 hover:text-indigo-900">Edit</a>
+                            </td>
+                            </tr>)
+                          : null
+                        }
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
+          }
       </div>
     </section>
   </>;
