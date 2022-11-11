@@ -27,7 +27,7 @@ const SignUpPage = () => {
 
   return <>
     <section className="py-20" style={{
-      backgroundImage: 'url(https://res.cloudinary.com/print-bear/image/fetch/c_fill,f_auto,fl_lossy,q_auto:best/https://images.ctfassets.net/rw1l6cgr235r/4hEMrzk55KaEWAIEeAocEm/725d3fa4580fdb5d16c3ae8ed8bf72a2/logo-stickers-thumbnail-4651.jpg)',
+      backgroundImage: 'url(https://mir-s3-cdn-cf.behance.net/project_modules/1400_opt_1/9a30f065056513.5ae9f871b82e4.png)',
       backgroundSize: 'cover',
     }}>
       <div className="container mx-auto max-w-screen-lg">
@@ -51,7 +51,7 @@ const SignUpPage = () => {
               </div>
               <div className="flex flex-col mb-4">
                 <label className="font-semibold mb-1">Email Address</label>
-                <input ref={register} className="py-2 px-4 bg-white rounded border-2 border-gray-600" type="text" name="email" placeholder="Email Address" />
+                <input ref={register} className="py-2 px-4 bg-white rounded border-2 border-gray-600" type="email" name="email" placeholder="Email Address" />
               </div>
               <div className="flex flex-col mb-6">
                 <label className="font-semibold mb-1">Password</label>
