@@ -1,10 +1,39 @@
 const express = require('express');
 const router = express.Router();
-const sequelize = require('../config/db');
+const sequelize = require('../config/db')
+const permission = require('../middlewares/permission')
+const { Op } = require('sequelize')
 
 // Get all products
-router.get('/', async (req, res) => {
+router.get('/', permission('admin', 'client'), async (req, res) => {
   return await sequelize.models.products.findAndCountAll()
+    .then(data => res.json(data))
+    .catch(err => res.json({ message: 'Error', data: err }))
+});
+
+router.get('/:price/:brand/:search', permission('admin', 'client'), async (req, res) => {
+  const { params: { price, brand, search } } = req
+  return await sequelize.models.products.findAndCountAll({
+    where: {
+      name: { [Op.like]: `%${search}%` }
+      // [Op.or]: [
+      //   { price: price },
+      //   { description: brand }
+      // ]
+    }
+  })
+    .then(data => res.json(data))
+    .catch(err => res.json({ message: 'Error', data: err }))
+});
+
+router.get('/:offset/:limit', permission('admin', 'client'), async (req, res) => {
+  let { params: { offset, limit } } = req
+  offset = parseInt(offset)
+  limit = parseInt(limit)
+  return await sequelize.models.products.findAndCountAll({
+      offset,
+      limit
+  })
     .then(data => res.json(data))
     .catch(err => res.json({ message: 'Error', data: err }))
 });
