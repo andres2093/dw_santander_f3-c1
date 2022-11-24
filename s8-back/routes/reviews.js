@@ -27,7 +27,7 @@ router.put('/:id', async (req, res) => {
   if (!review) {
     return res.status(404).json({ code: 404, message: 'Product not found' });
   }
-  const updatedReview = await product.update({
+  const updatedReview = await review.update({
     content: body.content,
     productId: body.productId,
   });
